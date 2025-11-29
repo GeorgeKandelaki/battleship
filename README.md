@@ -1,67 +1,84 @@
-# Battleship (Single-Player)
+# Battleship (Single-Player Engine-Driven Version)
 
-A single-player Battleship implementation built with vanilla JavaScript, HTML, and CSS, where the player attempts to sink randomly generated enemy ships. The project focuses on clean game-engine logic, including ship placement, collision detection, hit tracking, and sunk-ship detection.
+A single-player Battleship game built with **vanilla JavaScript**, featuring a cleanly separated **game engine** and **DOM UI layer**.  
+The engine handles shooting, ship placement, hit detection, and sinking logic, while the UI simply reflects the engine's state.
 
-# 🚀 Features
+This project focuses on **algorithmic logic, clean architecture, and custom state management** — no frameworks, no libraries.
 
--   Random ship generation
-    Ships are placed automatically with directional logic and safety zones.
+---
 
--   Ship placement validation
-    Ensures ships do not touch or overlap existing ships.
+## 🎮 Features
 
--   Hit, miss & sunk detection
-    Clicking a cell reveals whether it’s a hit, miss, or completes sinking a ship.
+-   Fully generated game board
+-   Random ship placement (Destroyer, Cruiser, Battleship)
+-   Custom engine with:
+    -   Shooting logic (`shoot`)
+    -   Ship sinking detection (`shipHasSunken`, `sinkShip`)
+    -   Grid mutation + state tracking
+-   Visual feedback for:
+    -   Misses
+    -   Hits
+    -   Sunk ships (full ship highlighted)
+-   Strict separation of:
+    -   **Engine logic**
+    -   **DOM rendering**
+-   Highly readable and maintainable code structure
 
--   Pure vanilla JavaScript engine
-    All logic (placement, shooting, sinking, victory detection) is built without frameworks.
+---
 
--   Fully interactive UI
-    The grid updates visually based on game events:
+## 📁 Project Structure
 
-    -   Miss → red
-    -   Hit → yellow
-    -   Sunk ship → green
-    -   Used space is respected
+/battleship
+│
+├── engine.js # Core game logic (shooting, sinking, placing)
+├── index.js # DOM rendering + user interactions
+├── constants.js # Board settings
+├── styles.css # Game styling
+└── index.html # Root HTML file
 
--   Simple and readable modular structure
-    Logic is separated into:
-    -   `engine.js` → actual gameplay logic
-    -   DOM rendering
-    -   Grid + constants
-    -   Utilities
+---
 
-# 🧠 How It Works
+## 🚀 How to Play
 
-1. A 8x8 grid is generated.
-2. The engine randomly places ships based on size.
-3. Each placement respects:
+1. Open the project in your browser or live server.
+2. Click any tile on the grid.
+3. The engine checks:
+    - Hit or miss
+    - Whether that hit caused a ship to sink
+4. UI updates automatically to reflect the state.
 
-    - Board boundaries
-    - No ship overlap
-    - No adjacent ships
+---
 
-4. Player clicks on cells to shoot.
-5. The engine updates the grid:
+## 🧠 What This Project Demonstrates
 
-    - 4 → miss
-    - 5 → hit
-    - 6 → sunk ship tiles
+-   Event-driven programming in JavaScript
+-   Clean separation of concerns
+-   Custom game engine design
+-   Coordinate geometry (start/end ship positions)
+-   DOM updates using computed positions
+-   Thoughtful mutation-based state design
+-   Readable, DRY, and beginner-friendly logic
 
-6. After each hit, the engine checks whether the whole ship has sunk.
-7. Game ends when all ships are destroyed.
+---
 
-# 📁 Tech Stack
+## 📌 To-Do (Next Improvements)
 
--   JavaScript (ES Modules)
--   HTML / CSS
--   Webpack (bundling)
+These will elevate the game from **slightly advanced → intermediate**:
 
-# ▶️ Running the Project
+-   [ ] **Ship overlap prevention** during random generation
+-   [ ] **Turn-based UX flow** (disable clicks after win or add next-turn UI)
+-   [ ] **Add simple BOT mode**
+-   [ ] **Refactor rendering using a single render function**
 
-```bash
-npm install
-npm run watch
-```
+---
 
-Then open the `index.html` file in the browser.
+## 📜 License
+
+MIT License — feel free to fork, modify, and build on top.
+
+---
+
+## 👤 Author
+
+**George Kandelaki**  
+Built with ❤️ using raw JavaScript fundamentals.
