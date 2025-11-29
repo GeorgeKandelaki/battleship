@@ -28,6 +28,7 @@ This project focuses on **algorithmic logic, clean architecture, and custom stat
 
 ## 📁 Project Structure
 
+```bash
 /battleship
 │
 ├── engine.js # Core game logic (shooting, sinking, placing)
@@ -35,6 +36,7 @@ This project focuses on **algorithmic logic, clean architecture, and custom stat
 ├── constants.js # Board settings
 ├── styles.css # Game styling
 └── index.html # Root HTML file
+```
 
 ---
 
