@@ -82,15 +82,16 @@ function renderGrid(grid, clean = false) {
 
             column.onclick = (e) => {
                 const curType = grid[i][t];
-                if (determineIfGameHasEnded(Object.values(ships), sunkenShips)) {
-                    finishGame();
-                    return null;
-                }
                 if (curType == 5 || curType == 4) return;
                 const [isHit, updatedGrid] = shoot(i, t, grid);
 
                 if (curType != 6) updateHitEl(e.target, isHit);
                 checkIfShipSunk(shipPositions, grid);
+
+                if (determineIfGameHasEnded(Object.values(ships), sunkenShips)) {
+                    finishGame();
+                    return null;
+                }
             };
 
             row.appendChild(column);
