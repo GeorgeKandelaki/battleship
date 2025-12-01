@@ -25,10 +25,7 @@ export function createGrid(rows = 8, columns = 8) {
     return grid;
 }
 
-// TODO: Implement checking overlapping, if generated ship coordinates intersect;
 export function checkOverlap(existingShips, newShip) {
-    console.log(existingShips, newShip);
-
     const [[xA1, yA1], [xA2, yA2]] = newShip;
 
     const newIsHorizontal = yA1 === yA2;
