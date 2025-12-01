@@ -4,6 +4,8 @@ const ships = {
     3: { name: "battleship", type: 3, squares: 4 },
 };
 
+let shipPositions = [];
+
 const blockTypes = {
     0: { name: "empty", id: 0, squares: 1 },
     4: { name: "used_space_empty", id: 4, squares: 1 },
@@ -24,7 +26,61 @@ export function createGrid(rows = 8, columns = 8) {
 }
 
 // TODO: Implement checking overlapping, if generated ship coordinates intersect;
-export function checkOverlap(shipPositions, curShipPos) {}
+export function checkOverlap(existingShips, newShip) {
+    console.log(existingShips, newShip);
+
+    const [[xA1, yA1], [xA2, yA2]] = newShip;
+
+    const newIsHorizontal = yA1 === yA2;
+    const newIsVertical = xA1 === xA2;
+
+    // Normalize the ranges
+    const newX1 = Math.min(xA1, xA2);
+    const newX2 = Math.max(xA1, xA2);
+    const newY1 = Math.min(yA1, yA2);
+    const newY2 = Math.max(yA1, yA2);
+
+    for (const ship of existingShips) {
+        const [[xB1, yB1], [xB2, yB2]] = ship;
+
+        const oldIsHorizontal = yB1 === yB2;
+        const oldIsVertical = xB1 === xB2;
+
+        const oldX1 = Math.min(xB1, xB2);
+        const oldX2 = Math.max(xB1, xB2);
+        const oldY1 = Math.min(yB1, yB2);
+        const oldY2 = Math.max(yB1, yB2);
+
+        // Same row → horizontal overlap
+        if (newIsHorizontal && oldIsHorizontal && yA1 === yB1) {
+            if (Math.max(newX1, oldX1) <= Math.min(newX2, oldX2)) {
+                return true;
+            }
+        }
+
+        // Same column → vertical overlap
+        if (newIsVertical && oldIsVertical && xA1 === xB1) {
+            if (Math.max(newY1, oldY1) <= Math.min(newY2, oldY2)) {
+                return true;
+            }
+        }
+
+        // Perpendicular ships: check crossing
+        if (newIsHorizontal && oldIsVertical) {
+            if (xB1 >= newX1 && xB1 <= newX2 && yA1 >= oldY1 && yA1 <= oldY2) {
+                return true;
+            }
+        }
+
+        if (newIsVertical && oldIsHorizontal) {
+            if (xA1 >= oldX1 && xA1 <= oldX2 && yB1 >= newY1 && yB1 <= newY2) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
 
 export function checkBoundariesAndComputeEnd(pos, axis, squares, colsRows, direction) {
     // For checking the boundaries of a ship, and judging from that incrementing or decrementing the num of squares from the given direction
@@ -41,15 +97,32 @@ export function genPos(rows, columns, squares) {
     const finalPos = [];
 
     // 1. Gen the random starting placement/position of the ship
-    const start = [Math.floor(Math.random() * rows), Math.floor(Math.random() * columns)];
+    let start = [Math.floor(Math.random() * rows), Math.floor(Math.random() * columns)];
 
     // 2. Randomly Choose col or row
     // Both col and row have only two different possible directions/path/ways. col: left | right || row: up | down
-    const axis = Math.floor(Math.random() * 2);
-    const direction = Math.floor(Math.random() * 2);
+    let axis = Math.floor(Math.random() * 2);
+    let direction = Math.floor(Math.random() * 2);
 
     // 4. Check if the direction we want to extend our ships length, is out of bounds and return an processed arr
-    const end = checkBoundariesAndComputeEnd(start, axis, squares, axis === 0 ? rows : columns, direction);
+    let end = checkBoundariesAndComputeEnd(start, axis, squares, axis === 0 ? rows : columns, direction);
+
+    while (
+        checkOverlap(
+            shipPositions.map((ship) => ship.pos),
+            [start, end]
+        )
+    ) {
+        start = [Math.floor(Math.random() * rows), Math.floor(Math.random() * columns)];
+
+        // 2. Randomly Choose col or row
+        // Both col and row have only two different possible directions/path/ways. col: left | right || row: up | down
+        axis = Math.floor(Math.random() * 2);
+        direction = Math.floor(Math.random() * 2);
+
+        // 4. Check if the direction we want to extend our ships length, is out of bounds and return an processed arr
+        end = checkBoundariesAndComputeEnd(start, axis, squares, axis === 0 ? rows : columns, direction);
+    }
 
     // 5. Get the final coords
     finalPos.push(start, end);
@@ -120,7 +193,8 @@ export function shoot(x, y, grid) {
 
 export function startGame(rows, cols, ships) {
     const grid = createGrid(rows, cols);
-    const shipPositions = [];
+    shipPositions = [];
+    // const shipPositions = [];
 
     for (const [key, value] of Object.entries(ships)) {
         const pos = genPos(rows, cols, value.squares);

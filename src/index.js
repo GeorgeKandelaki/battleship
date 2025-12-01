@@ -128,11 +128,11 @@ function playAgain() {
 
 function finishGame() {
     const div = document.createElement("div");
+    div.classList.add("end-game-overlay"); // <--- added class
+
     const playAgainButton = document.createElement("button");
     playAgainButton.innerText = "Play Again";
-    playAgainButton.onclick = (e) => {
-        playAgain();
-    };
+    playAgainButton.onclick = () => playAgain();
 
     div.innerHTML = "<p>Game has finished.</p>";
     div.appendChild(playAgainButton);
