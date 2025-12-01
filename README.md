@@ -67,7 +67,7 @@ This project focuses on **algorithmic logic, clean architecture, and custom stat
 
 These will elevate the game from **slightly advanced → intermediate**:
 
--   [ ] **Ship overlap prevention** during random generation
+-   [X] **Ship overlap prevention** during random generation
 -   [ ] **Turn-based UX flow** (disable clicks after win or add next-turn UI)
 -   [ ] **Add simple BOT mode**
 -   [ ] **Refactor rendering using a single render function**
